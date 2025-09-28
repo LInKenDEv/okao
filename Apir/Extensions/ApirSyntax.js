@@ -5,6 +5,12 @@
  * @author Apir Extensions Team
  */
 
+// Alternative metadata format for better parsing
+// @name Universal Syntax Highlighter
+// @description Adds comprehensive syntax highlighting to all code artifacts with support for 50+ programming languages
+// @version 2.2.0
+// @author Apir Extensions Team
+
 // Universal Syntax Highlighter Extension for Apir
 // Integrates with Apir's WebView artifacts system
 // Supports all major programming languages and markup formats
