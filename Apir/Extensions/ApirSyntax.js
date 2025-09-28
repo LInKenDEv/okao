@@ -1,12 +1,8 @@
-/**
- * @name Universal Syntax Highlighter
- * @description Adds comprehensive syntax highlighting to all code artifacts with support for 50+ programming languages
- * @version 2.1.0
- * @author Apir Extensions Team
- */
 
-// Universal Syntax Highlighter Extension for Apir
-// Supports all major programming languages and markup formats
+ // @name Universal Syntax Highlighter
+ // @description Adds comprehensive syntax highlighting to all code artifacts with support for 50+ programming languages
+ // @version 2.1.0
+ // @author Apir Extensions Team
 
 const SyntaxHighlighter = {
   // Language detection patterns
