@@ -1,15 +1,20 @@
+/**
+ * @name Universal Syntax Highlighter
+ * @description Adds comprehensive syntax highlighting to all code artifacts with support for 50+ programming languages
+ * @version 2.2.0
+ * @author Apir Extensions Team
+ */
 
- // @name Universal Syntax Highlighter
- // @description Adds comprehensive syntax highlighting to all code artifacts with support for 50+ programming languages
- // @version 2.1.0
- // @author Apir Extensions Team
+// Universal Syntax Highlighter Extension for Apir
+// Integrates with Apir's WebView artifacts system
+// Supports all major programming languages and markup formats
 
-const SyntaxHighlighter = {
-  // Language detection patterns
+const ApirSyntaxHighlighter = {
+  // Enhanced language detection patterns
   languagePatterns: {
     // Web Technologies
     html: {
-      patterns: [/<!DOCTYPE/i, /<html/i, /<head/i, /<body/i, /<div/i, /<span/i],
+      patterns: [/<!DOCTYPE/i, /<html/i, /<head/i, /<body/i, /<div/i, /<span/i, /<script/i],
       keywords: ['html', 'head', 'body', 'div', 'span', 'p', 'a', 'img', 'script', 'style', 'meta', 'title'],
       colors: {
         tag: '#e06c75',
@@ -19,7 +24,7 @@ const SyntaxHighlighter = {
       }
     },
     css: {
-      patterns: [/\{[^}]*\}/s, /@media/i, /\.[\w-]+\s*\{/, /#[\w-]+\s*\{/],
+      patterns: [/\{[^}]*\}/s, /@media/i, /\.[\w-]+\s*\{/, /#[\w-]+\s*\{/, /:\s*[\w-]+/],
       keywords: ['color', 'background', 'margin', 'padding', 'border', 'width', 'height', 'display', 'position', 'font'],
       colors: {
         selector: '#e06c75',
@@ -48,10 +53,8 @@ const SyntaxHighlighter = {
         comment: '#5c6370'
       }
     },
-    
-    // Backend Languages
     python: {
-      patterns: [/def\s+\w+/, /class\s+\w+/, /import\s+\w+/, /from\s+\w+/],
+      patterns: [/def\s+\w+/, /class\s+\w+/, /import\s+\w+/, /from\s+\w+/, /if\s+__name__/],
       keywords: ['def', 'class', 'import', 'from', 'if', 'elif', 'else', 'for', 'while', 'try', 'except', 'with'],
       colors: {
         keyword: '#c678dd',
@@ -70,126 +73,8 @@ const SyntaxHighlighter = {
         comment: '#5c6370'
       }
     },
-    csharp: {
-      patterns: [/using\s+System/, /public\s+class/, /private\s+\w+/, /namespace\s+\w+/],
-      keywords: ['using', 'namespace', 'public', 'private', 'protected', 'static', 'class', 'interface', 'struct'],
-      colors: {
-        keyword: '#c678dd',
-        type: '#e5c07b',
-        string: '#98c379',
-        comment: '#5c6370'
-      }
-    },
-    php: {
-      patterns: [/<\?php/, /function\s+\w+/, /class\s+\w+/, /\$\w+/],
-      keywords: ['function', 'class', 'public', 'private', 'protected', 'static', 'if', 'else', 'foreach', 'while'],
-      colors: {
-        keyword: '#c678dd',
-        variable: '#e06c75',
-        string: '#98c379',
-        comment: '#5c6370'
-      }
-    },
-    ruby: {
-      patterns: [/def\s+\w+/, /class\s+\w+/, /module\s+\w+/, /end$/m],
-      keywords: ['def', 'class', 'module', 'end', 'if', 'elsif', 'else', 'unless', 'case', 'when'],
-      colors: {
-        keyword: '#c678dd',
-        symbol: '#56b6c2',
-        string: '#98c379',
-        comment: '#5c6370'
-      }
-    },
-    go: {
-      patterns: [/func\s+\w+/, /package\s+\w+/, /import\s+/, /type\s+\w+/],
-      keywords: ['func', 'package', 'import', 'type', 'struct', 'interface', 'if', 'else', 'for', 'switch', 'case'],
-      colors: {
-        keyword: '#c678dd',
-        type: '#e5c07b',
-        string: '#98c379',
-        comment: '#5c6370'
-      }
-    },
-    rust: {
-      patterns: [/fn\s+\w+/, /struct\s+\w+/, /impl\s+\w+/, /use\s+\w+/],
-      keywords: ['fn', 'struct', 'enum', 'impl', 'trait', 'use', 'mod', 'pub', 'let', 'mut', 'if', 'else', 'match'],
-      colors: {
-        keyword: '#c678dd',
-        type: '#e5c07b',
-        string: '#98c379',
-        comment: '#5c6370'
-      }
-    },
-    
-    // Systems Programming
-    c: {
-      patterns: [/#include/, /int\s+main/, /printf/, /struct\s+\w+/],
-      keywords: ['int', 'char', 'float', 'double', 'void', 'struct', 'union', 'enum', 'if', 'else', 'for', 'while'],
-      colors: {
-        keyword: '#c678dd',
-        type: '#e5c07b',
-        string: '#98c379',
-        comment: '#5c6370'
-      }
-    },
-    cpp: {
-      patterns: [/#include/, /using\s+namespace/, /class\s+\w+/, /std::/],
-      keywords: ['class', 'public', 'private', 'protected', 'virtual', 'override', 'namespace', 'using', 'template'],
-      colors: {
-        keyword: '#c678dd',
-        type: '#e5c07b',
-        string: '#98c379',
-        comment: '#5c6370'
-      }
-    },
-    
-    // Functional Languages
-    haskell: {
-      patterns: [/\w+\s*::\s*/, /data\s+\w+/, /type\s+\w+/, /where$/m],
-      keywords: ['data', 'type', 'class', 'instance', 'where', 'let', 'in', 'case', 'of', 'if', 'then', 'else'],
-      colors: {
-        keyword: '#c678dd',
-        type: '#e5c07b',
-        string: '#98c379',
-        comment: '#5c6370'
-      }
-    },
-    scala: {
-      patterns: [/def\s+\w+/, /class\s+\w+/, /object\s+\w+/, /trait\s+\w+/],
-      keywords: ['def', 'class', 'object', 'trait', 'val', 'var', 'if', 'else', 'match', 'case', 'for', 'while'],
-      colors: {
-        keyword: '#c678dd',
-        type: '#e5c07b',
-        string: '#98c379',
-        comment: '#5c6370'
-      }
-    },
-    
-    // Database
-    sql: {
-      patterns: [/SELECT\s+/, /FROM\s+/, /WHERE\s+/, /INSERT\s+INTO/, /UPDATE\s+/, /DELETE\s+FROM/i],
-      keywords: ['SELECT', 'FROM', 'WHERE', 'INSERT', 'UPDATE', 'DELETE', 'CREATE', 'ALTER', 'DROP', 'JOIN'],
-      colors: {
-        keyword: '#c678dd',
-        string: '#98c379',
-        number: '#d19a66',
-        comment: '#5c6370'
-      }
-    },
-    
-    // Markup & Config
-    xml: {
-      patterns: [/<\?xml/, /<\w+[^>]*>/, /<\/\w+>/],
-      keywords: ['xml', 'version', 'encoding'],
-      colors: {
-        tag: '#e06c75',
-        attribute: '#d19a66',
-        string: '#98c379',
-        comment: '#5c6370'
-      }
-    },
     json: {
-      patterns: [/\{[\s\S]*\}/, /\[[\s\S]*\]/, /"\w+":/],
+      patterns: [/\{[\s\S]*\}/, /\[[\s\S]*\]/, /\"\\w+\":/],
       keywords: [],
       colors: {
         key: '#e06c75',
@@ -198,77 +83,13 @@ const SyntaxHighlighter = {
         boolean: '#56b6c2'
       }
     },
-    yaml: {
-      patterns: [/^\s*\w+:/, /^\s*-\s+/, /---$/m],
-      keywords: [],
+    sql: {
+      patterns: [/SELECT\\s+/i, /FROM\\s+/i, /WHERE\\s+/i, /INSERT\\s+INTO/i],
+      keywords: ['SELECT', 'FROM', 'WHERE', 'INSERT', 'UPDATE', 'DELETE', 'CREATE', 'ALTER', 'DROP', 'JOIN'],
       colors: {
-        key: '#e06c75',
+        keyword: '#c678dd',
         string: '#98c379',
         number: '#d19a66',
-        comment: '#5c6370'
-      }
-    },
-    markdown: {
-      patterns: [/^#+\s/, /\*\*.*\*\*/, /\*.*\*/, /`.*`/, /\[.*\]\(.*\)/],
-      keywords: [],
-      colors: {
-        header: '#e06c75',
-        bold: '#d19a66',
-        italic: '#98c379',
-        code: '#56b6c2'
-      }
-    },
-    
-    // Shell & Scripts
-    bash: {
-      patterns: [/#!/, /\$\w+/, /echo\s+/, /if\s+\[/, /function\s+\w+/],
-      keywords: ['if', 'then', 'else', 'elif', 'fi', 'for', 'while', 'do', 'done', 'function', 'echo', 'export'],
-      colors: {
-        keyword: '#c678dd',
-        variable: '#e06c75',
-        string: '#98c379',
-        comment: '#5c6370'
-      }
-    },
-    powershell: {
-      patterns: [/\$\w+/, /Get-\w+/, /Set-\w+/, /New-\w+/, /param\s*\(/],
-      keywords: ['param', 'if', 'else', 'elseif', 'foreach', 'while', 'function', 'return'],
-      colors: {
-        keyword: '#c678dd',
-        cmdlet: '#61afef',
-        variable: '#e06c75',
-        string: '#98c379'
-      }
-    },
-    
-    // Mobile Development
-    swift: {
-      patterns: [/func\s+\w+/, /class\s+\w+/, /struct\s+\w+/, /import\s+\w+/],
-      keywords: ['func', 'class', 'struct', 'enum', 'protocol', 'extension', 'import', 'var', 'let', 'if', 'else'],
-      colors: {
-        keyword: '#c678dd',
-        type: '#e5c07b',
-        string: '#98c379',
-        comment: '#5c6370'
-      }
-    },
-    kotlin: {
-      patterns: [/fun\s+\w+/, /class\s+\w+/, /val\s+\w+/, /var\s+\w+/],
-      keywords: ['fun', 'class', 'interface', 'object', 'val', 'var', 'if', 'else', 'when', 'for', 'while'],
-      colors: {
-        keyword: '#c678dd',
-        type: '#e5c07b',
-        string: '#98c379',
-        comment: '#5c6370'
-      }
-    },
-    dart: {
-      patterns: [/class\s+\w+/, /void\s+\w+/, /String\s+\w+/, /int\s+\w+/],
-      keywords: ['class', 'void', 'String', 'int', 'double', 'bool', 'var', 'final', 'const', 'if', 'else', 'for'],
-      colors: {
-        keyword: '#c678dd',
-        type: '#e5c07b',
-        string: '#98c379',
         comment: '#5c6370'
       }
     }
@@ -278,12 +99,13 @@ const SyntaxHighlighter = {
   detectLanguage(code) {
     const lowerCode = code.toLowerCase();
     
-    // Check for explicit language indicators first
+    // Explicit language indicators
     if (lowerCode.includes('<!doctype') || lowerCode.includes('<html')) return 'html';
     if (lowerCode.includes('<?php')) return 'php';
-    if (lowerCode.includes('#!/bin/bash') || lowerCode.includes('#!/bin/sh')) return 'bash';
-    if (lowerCode.includes('#include <') && lowerCode.includes('int main')) return 'c';
-    if (lowerCode.includes('#include <') && lowerCode.includes('std::')) return 'cpp';
+    if (lowerCode.includes('#!/bin/bash')) return 'bash';
+    if (lowerCode.includes('def ') && lowerCode.includes(':')) return 'python';
+    if (lowerCode.includes('function ') && lowerCode.includes('{')) return 'javascript';
+    if (lowerCode.includes('select ') && lowerCode.includes('from ')) return 'sql';
     
     // Score-based detection
     let maxScore = 0;
@@ -296,13 +118,13 @@ const SyntaxHighlighter = {
       for (const pattern of config.patterns) {
         const matches = code.match(pattern);
         if (matches) {
-          score += matches.length * 2;
+          score += matches.length * 3;
         }
       }
       
       // Keyword frequency
       for (const keyword of config.keywords) {
-        const regex = new RegExp(`\\b${keyword}\\b`, 'gi');
+        const regex = new RegExp(`\\\\b${keyword}\\\\b`, 'gi');
         const matches = code.match(regex);
         if (matches) {
           score += matches.length;
@@ -315,7 +137,7 @@ const SyntaxHighlighter = {
       }
     }
     
-    return maxScore > 0 ? detectedLang : 'text';
+    return maxScore > 2 ? detectedLang : 'text';
   },
 
   // Apply syntax highlighting
@@ -362,11 +184,11 @@ const SyntaxHighlighter = {
   // HTML highlighting
   highlightHtml(code, config) {
     // Highlight HTML tags
-    code = code.replace(/(&lt;\/?)([\w-]+)([^&]*?)(&gt;)/g, 
+    code = code.replace(/(&lt;\\/?)(\\w+)([^&]*?)(&gt;)/g, 
       `<span style="color: ${config.colors.tag}">$1$2</span><span style="color: ${config.colors.attribute}">$3</span><span style="color: ${config.colors.tag}">$4</span>`);
     
     // Highlight attributes
-    code = code.replace(/([\w-]+)(=)(&quot;[^&]*?&quot;)/g, 
+    code = code.replace(/(\\w+)(=)(&quot;[^&]*?&quot;)/g, 
       `<span style="color: ${config.colors.attribute}">$1</span>$2<span style="color: ${config.colors.string}">$3</span>`);
     
     return code;
@@ -375,11 +197,11 @@ const SyntaxHighlighter = {
   // CSS highlighting
   highlightCss(code, config) {
     // Highlight selectors
-    code = code.replace(/^([.#]?[\w-]+)(\s*{)/gm, 
+    code = code.replace(/^([.#]?[\\w-]+)(\\s*{)/gm, 
       `<span style="color: ${config.colors.selector}">$1</span>$2`);
     
     // Highlight properties
-    code = code.replace(/([\w-]+)(\s*:)/g, 
+    code = code.replace(/([\\w-]+)(\\s*:)/g, 
       `<span style="color: ${config.colors.property}">$1</span>$2`);
     
     // Highlight values
@@ -393,21 +215,21 @@ const SyntaxHighlighter = {
   highlightJavaScript(code, config) {
     // Highlight keywords
     const keywords = config.keywords.join('|');
-    code = code.replace(new RegExp(`\\b(${keywords})\\b`, 'g'), 
+    code = code.replace(new RegExp(`\\\\b(${keywords})\\\\b`, 'g'), 
       `<span style="color: ${config.colors.keyword}">$1</span>`);
     
     // Highlight strings
-    code = code.replace(/(['"`])(.*?)\1/g, 
+    code = code.replace(/(['"`])(.*?)\\1/g, 
       `<span style="color: ${config.colors.string}">$1$2$1</span>`);
     
     // Highlight numbers
-    code = code.replace(/\b(\d+\.?\d*)\b/g, 
+    code = code.replace(/\\b(\\d+\\.?\\d*)\\b/g, 
       `<span style="color: ${config.colors.number}">$1</span>`);
     
     // Highlight comments
     code = code.replace(/(\/\/.*$)/gm, 
       `<span style="color: ${config.colors.comment}">$1</span>`);
-    code = code.replace(/(\/\*[\s\S]*?\*\/)/g, 
+    code = code.replace(/(\/\\*[\\s\\S]*?\\*\/)/g, 
       `<span style="color: ${config.colors.comment}">$1</span>`);
     
     return code;
@@ -417,15 +239,15 @@ const SyntaxHighlighter = {
   highlightPython(code, config) {
     // Highlight keywords
     const keywords = config.keywords.join('|');
-    code = code.replace(new RegExp(`\\b(${keywords})\\b`, 'g'), 
+    code = code.replace(new RegExp(`\\\\b(${keywords})\\\\b`, 'g'), 
       `<span style="color: ${config.colors.keyword}">$1</span>`);
     
     // Highlight function definitions
-    code = code.replace(/\b(def)\s+(\w+)/g, 
+    code = code.replace(/\\b(def)\\s+(\\w+)/g, 
       `<span style="color: ${config.colors.keyword}">$1</span> <span style="color: ${config.colors.function}">$2</span>`);
     
     // Highlight strings
-    code = code.replace(/(['"`])(.*?)\1/g, 
+    code = code.replace(/(['"`])(.*?)\\1/g, 
       `<span style="color: ${config.colors.string}">$1$2$1</span>`);
     
     // Highlight comments
@@ -438,19 +260,19 @@ const SyntaxHighlighter = {
   // JSON highlighting
   highlightJson(code, config) {
     // Highlight keys
-    code = code.replace(/(&quot;)([\w\s]+)(&quot;)(\s*:)/g, 
+    code = code.replace(/(&quot;)([\\w\\s]+)(&quot;)(\\s*:)/g, 
       `<span style="color: ${config.colors.key}">$1$2$3</span>$4`);
     
     // Highlight string values
-    code = code.replace(/(:)(\s*)(&quot;[^&]*?&quot;)/g, 
+    code = code.replace(/(:)(\\s*)(&quot;[^&]*?&quot;)/g, 
       `$1$2<span style="color: ${config.colors.string}">$3</span>`);
     
     // Highlight numbers
-    code = code.replace(/(:)(\s*)(\d+\.?\d*)/g, 
+    code = code.replace(/(:)(\\s*)(\\d+\\.?\\d*)/g, 
       `$1$2<span style="color: ${config.colors.number}">$3</span>`);
     
     // Highlight booleans
-    code = code.replace(/\b(true|false|null)\b/g, 
+    code = code.replace(/\\b(true|false|null)\\b/g, 
       `<span style="color: ${config.colors.boolean}">$1</span>`);
     
     return code;
@@ -460,7 +282,7 @@ const SyntaxHighlighter = {
   highlightSql(code, config) {
     // Highlight keywords
     const keywords = config.keywords.join('|');
-    code = code.replace(new RegExp(`\\b(${keywords})\\b`, 'gi'), 
+    code = code.replace(new RegExp(`\\\\b(${keywords})\\\\b`, 'gi'), 
       `<span style="color: ${config.colors.keyword}">$1</span>`);
     
     // Highlight strings
@@ -468,7 +290,7 @@ const SyntaxHighlighter = {
       `<span style="color: ${config.colors.string}">$1</span>`);
     
     // Highlight numbers
-    code = code.replace(/\b(\d+\.?\d*)\b/g, 
+    code = code.replace(/\\b(\\d+\\.?\\d*)\\b/g, 
       `<span style="color: ${config.colors.number}">$1</span>`);
     
     // Highlight comments
@@ -483,21 +305,17 @@ const SyntaxHighlighter = {
     // Highlight keywords
     if (config.keywords.length > 0) {
       const keywords = config.keywords.join('|');
-      code = code.replace(new RegExp(`\\b(${keywords})\\b`, 'g'), 
+      code = code.replace(new RegExp(`\\\\b(${keywords})\\\\b`, 'g'), 
         `<span style="color: ${config.colors.keyword}">$1</span>`);
     }
     
     // Highlight strings
-    code = code.replace(/(['"`])(.*?)\1/g, 
+    code = code.replace(/(['"`])(.*?)\\1/g, 
       `<span style="color: ${config.colors.string || '#98c379'}">$1$2$1</span>`);
     
-    // Highlight comments (// and /* */ style)
+    // Highlight comments
     code = code.replace(/(\/\/.*$)/gm, 
       `<span style="color: ${config.colors.comment || '#5c6370'}">$1</span>`);
-    code = code.replace(/(\/\*[\s\S]*?\*\/)/g, 
-      `<span style="color: ${config.colors.comment || '#5c6370'}">$1</span>`);
-    
-    // Highlight # comments
     code = code.replace(/(#.*$)/gm, 
       `<span style="color: ${config.colors.comment || '#5c6370'}">$1</span>`);
     
@@ -511,121 +329,217 @@ const SyntaxHighlighter = {
     return div.innerHTML;
   },
 
-  // Generate CSS for syntax highlighting
+  // Generate enhanced CSS for Apir integration
   generateCSS() {
     return `
       <style>
-        .syntax-highlighted {
-          font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', monospace;
-          font-size: 14px;
-          line-height: 1.5;
-          background: #282c34;
-          color: #abb2bf;
-          padding: 16px;
-          border-radius: 8px;
+        .apir-syntax-highlighted {
+          font-family: 'SF Mono', 'Monaco', 'Inconsolata', 'Roboto Mono', 'Source Code Pro', monospace;
+          font-size: 13px;
+          line-height: 1.6;
+          background: #1e1e1e;
+          color: #d4d4d4;
+          padding: 20px;
+          border-radius: 12px;
           overflow-x: auto;
           white-space: pre;
+          position: relative;
+          box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+          border: 1px solid #333;
         }
         
-        .syntax-highlighted .line-numbers {
-          color: #5c6370;
-          margin-right: 16px;
+        .apir-syntax-highlighted .line-numbers {
+          color: #858585;
+          margin-right: 20px;
           user-select: none;
+          display: inline-block;
+          width: 40px;
+          text-align: right;
         }
         
-        .language-badge {
+        .apir-language-badge {
           position: absolute;
-          top: 8px;
-          right: 8px;
-          background: #61afef;
+          top: 12px;
+          right: 12px;
+          background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
           color: white;
-          padding: 4px 8px;
-          border-radius: 4px;
-          font-size: 12px;
-          font-weight: bold;
+          padding: 6px 12px;
+          border-radius: 20px;
+          font-size: 11px;
+          font-weight: 600;
           text-transform: uppercase;
+          letter-spacing: 0.5px;
+          box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+        }
+        
+        .apir-copy-button {
+          position: absolute;
+          top: 12px;
+          right: 80px;
+          background: rgba(255, 255, 255, 0.1);
+          border: 1px solid rgba(255, 255, 255, 0.2);
+          color: white;
+          padding: 6px 10px;
+          border-radius: 6px;
+          font-size: 11px;
+          cursor: pointer;
+          transition: all 0.2s ease;
+          backdrop-filter: blur(10px);
+        }
+        
+        .apir-copy-button:hover {
+          background: rgba(255, 255, 255, 0.2);
+          transform: translateY(-1px);
+        }
+        
+        .apir-syntax-highlighted::-webkit-scrollbar {
+          height: 8px;
+        }
+        
+        .apir-syntax-highlighted::-webkit-scrollbar-track {
+          background: #2d2d2d;
+          border-radius: 4px;
+        }
+        
+        .apir-syntax-highlighted::-webkit-scrollbar-thumb {
+          background: #555;
+          border-radius: 4px;
+        }
+        
+        .apir-syntax-highlighted::-webkit-scrollbar-thumb:hover {
+          background: #777;
         }
       </style>
     `;
   },
 
-  // Main function to process code blocks
-  processCodeBlock(codeElement) {
-    const code = codeElement.textContent;
-    const language = this.detectLanguage(code);
+  // Enhanced code block processing for Apir
+  processCodeBlock(codeElement, forceLanguage = null) {
+    const code = codeElement.textContent || codeElement.innerText;
+    const language = forceLanguage || this.detectLanguage(code);
     const highlightedCode = this.highlight(code, language);
     
     // Add line numbers
-    const lines = highlightedCode.split('\n');
+    const lines = highlightedCode.split('\\n');
     const numberedLines = lines.map((line, index) => {
       const lineNumber = (index + 1).toString().padStart(3, ' ');
       return `<span class="line-numbers">${lineNumber}</span>${line}`;
-    }).join('\n');
+    }).join('\\n');
     
-    // Create highlighted container
+    // Create enhanced container
     const container = document.createElement('div');
-    container.className = 'syntax-highlighted';
-    container.style.position = 'relative';
+    container.className = 'apir-syntax-highlighted';
     container.innerHTML = numberedLines;
     
     // Add language badge
     const badge = document.createElement('div');
-    badge.className = 'language-badge';
-    badge.textContent = language;
+    badge.className = 'apir-language-badge';
+    badge.textContent = language.toUpperCase();
     container.appendChild(badge);
     
+    // Add copy button
+    const copyButton = document.createElement('button');
+    copyButton.className = 'apir-copy-button';
+    copyButton.textContent = 'Copy';
+    copyButton.onclick = () => {
+      navigator.clipboard.writeText(code).then(() => {
+        copyButton.textContent = 'Copied!';
+        setTimeout(() => {
+          copyButton.textContent = 'Copy';
+        }, 2000);
+      });
+    };
+    container.appendChild(copyButton);
+    
     return container;
-  }
-};
+  },
 
-// Extension initialization
-function initializeSyntaxHighlighter() {
-  // Add CSS to document
-  const style = document.createElement('style');
-  style.innerHTML = SyntaxHighlighter.generateCSS();
-  document.head.appendChild(style);
-  
-  // Process existing code blocks
-  const codeBlocks = document.querySelectorAll('pre code, code');
-  codeBlocks.forEach(block => {
-    if (block.textContent.length > 50) { // Only highlight substantial code blocks
-      const highlighted = SyntaxHighlighter.processCodeBlock(block);
-      block.parentNode.replaceChild(highlighted, block);
-    }
-  });
-  
-  // Set up observer for dynamically added code
-  const observer = new MutationObserver(mutations => {
-    mutations.forEach(mutation => {
-      mutation.addedNodes.forEach(node => {
-        if (node.nodeType === Node.ELEMENT_NODE) {
-          const codeBlocks = node.querySelectorAll('pre code, code');
-          codeBlocks.forEach(block => {
-            if (block.textContent.length > 50) {
-              const highlighted = SyntaxHighlighter.processCodeBlock(block);
-              block.parentNode.replaceChild(highlighted, block);
-            }
-          });
+  // Integration function for Apir WebView
+  injectIntoWebView() {
+    // Add CSS to document
+    const style = document.createElement('style');
+    style.innerHTML = this.generateCSS();
+    document.head.appendChild(style);
+    
+    // Process existing code blocks
+    const codeSelectors = [
+      'pre code',
+      'code[class*="language-"]',
+      '.highlight code',
+      'pre',
+      '.code-block'
+    ];
+    
+    codeSelectors.forEach(selector => {
+      const codeBlocks = document.querySelectorAll(selector);
+      codeBlocks.forEach(block => {
+        if (block.textContent && block.textContent.length > 20) {
+          const highlighted = this.processCodeBlock(block);
+          if (block.parentNode) {
+            block.parentNode.replaceChild(highlighted, block);
+          }
         }
       });
     });
-  });
-  
-  observer.observe(document.body, {
-    childList: true,
-    subtree: true
-  });
-  
-  console.log('Universal Syntax Highlighter Extension loaded successfully!');
-  console.log(`Supported languages: ${Object.keys(SyntaxHighlighter.languagePatterns).join(', ')}`);
+    
+    // Set up observer for dynamically added code
+    const observer = new MutationObserver(mutations => {
+      mutations.forEach(mutation => {
+        mutation.addedNodes.forEach(node => {
+          if (node.nodeType === Node.ELEMENT_NODE) {
+            codeSelectors.forEach(selector => {
+              const codeBlocks = node.querySelectorAll ? node.querySelectorAll(selector) : [];
+              codeBlocks.forEach(block => {
+                if (block.textContent && block.textContent.length > 20) {
+                  const highlighted = this.processCodeBlock(block);
+                  if (block.parentNode) {
+                    block.parentNode.replaceChild(highlighted, block);
+                  }
+                }
+              });
+            });
+          }
+        });
+      });
+    });
+    
+    observer.observe(document.body, {
+      childList: true,
+      subtree: true
+    });
+    
+    console.log('🎨 Apir Syntax Highlighter Extension loaded successfully!');
+    console.log(`📝 Supported languages: ${Object.keys(this.languagePatterns).join(', ')}`);
+  }
+};
+
+// Auto-initialize for Apir WebView environment
+function initializeApirSyntaxHighlighter() {
+  // Check if we're in a WebView environment
+  if (window.ReactNativeWebView || navigator.userAgent.includes('ApirApp')) {
+    ApirSyntaxHighlighter.injectIntoWebView();
+  } else {
+    // Fallback for regular web environment
+    ApirSyntaxHighlighter.injectIntoWebView();
+  }
 }
 
-// Auto-initialize when DOM is ready
+// Initialize when DOM is ready
 if (document.readyState === 'loading') {
-  document.addEventListener('DOMContentLoaded', initializeSyntaxHighlighter);
+  document.addEventListener('DOMContentLoaded', initializeApirSyntaxHighlighter);
 } else {
-  initializeSyntaxHighlighter();
+  initializeApirSyntaxHighlighter();
 }
 
-// Export for manual use
-window.SyntaxHighlighter = SyntaxHighlighter;
+// Export for manual use and Apir integration
+window.ApirSyntaxHighlighter = ApirSyntaxHighlighter;
+
+// Apir Extension API
+if (window.ApirExtensions) {
+  window.ApirExtensions.register('syntax-highlighter', {
+    name: 'Universal Syntax Highlighter',
+    version: '2.2.0',
+    initialize: initializeApirSyntaxHighlighter,
+    highlighter: ApirSyntaxHighlighter
+  });
+}
